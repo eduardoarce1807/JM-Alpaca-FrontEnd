@@ -11,6 +11,9 @@ class CompraBrosaDrawer extends StatefulWidget {
 }
 
 class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
+
+  List<Widget> listCompraBrosa = <Widget>[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -22,97 +22,121 @@ class _LoginDrawer extends State<LoginDrawer> {
   
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(30),
-        child: Form(
-          key: formKey,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Text(
-                    'JM Alpaca',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 60.0,
-                        color: Colors.blue),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  obtenerCampoUsuario(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  obtenerCampoContrasena(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          print('Forgotted Password!');
-                        },
-                        child: Text(
-                          '¿Olvidaste tu contraseña?',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.4),
-                            fontSize: 12.0,
-                          ),
-                        ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: 320,
+              child: Stack(
+                children: <Widget>[
+                  // Positioned(
+                  //   top: -5,
+                  //   height: 300,
+                  //   width: width,
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       image: DecorationImage(
+                  //         image: AssetImage('assets/images/b2.png'),
+                  //         fit: BoxFit.fill
+                  //       )
+                  //     ),
+                  //   ),
+                  // ),
+                  Positioned(
+                    height: 300,
+                    width: width+20,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/b1.png'),
+                          fit: BoxFit.fill
+                        )
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  obtenerBotonIniciarSesion(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Divider(
-                    color: Colors.black,
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '¿Aún no tienes una cuenta?',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.5),
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          print('Sign Up');
-                          // Get.to(SignUpDrawer());
-                          Navigator.pushNamed(context, '/signup');
-                        },
-                        child: Text('Regístrate'),
-                      )
-                    ],
-                  ),
+                    ),
+                  )
                 ],
               ),
             ),
-          ),
-        ),
+            Form(
+              key: formKey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Login", style: TextStyle(color: Color.fromRGBO(49, 39, 79, 1), fontWeight: FontWeight.bold, fontSize: 30),),
+                    SizedBox(height: 30,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(196, 135, 198, .3),
+                            blurRadius: 20,
+                            offset: Offset(0, 10),
+                          )
+                        ]
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              border: Border(bottom: BorderSide(
+                                color: Colors.grey.shade200
+                              ))
+                            ),
+                            child: getUsuario()
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: getPassword()
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    Center(
+                      child: SizedBox(
+                        width: 230,
+                        child: getLoginButton(),
+                      )
+                    ),
+                    SizedBox(height: 5,),
+                    Center(child: TextButton(
+                          onPressed: () {
+                            print('Sign Up');
+                            // Get.to(SignUpDrawer());
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                          child: Text('Regístrate', style: TextStyle(color: Color.fromRGBO(49, 39, 79, .6)))
+                    )),
+                    
+                  ],
+                ),
+              )
+            )
+          ],
+        ),  
       ),
     );
   }
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   
-  TextFormField obtenerCampoUsuario() {
+  TextFormField getUsuario() {
     return TextFormField(
-
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
-        labelText: 'Usuario',
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.person),
+        border: InputBorder.none,
+        hintText: "Usuario",
+        hintStyle: TextStyle(color: Colors.grey),
+        prefixIcon: Icon(Icons.person)
       ),
       onSaved: (value) {
         usuarioIngresado = value!;
@@ -120,12 +144,13 @@ class _LoginDrawer extends State<LoginDrawer> {
     );
   }
 
-  TextFormField obtenerCampoContrasena() {
+  TextFormField getPassword() {
     return TextFormField(
       obscureText: true,
       decoration: const InputDecoration(
-        labelText: 'Contraseña',
-        border: OutlineInputBorder(),
+        hintText: 'Contraseña',
+        hintStyle: TextStyle(color: Colors.grey),
+        border: InputBorder.none,
         prefixIcon: Icon(Icons.lock),
         suffixIcon: Icon(Icons.remove_red_eye),
       ),
@@ -142,19 +167,21 @@ class _LoginDrawer extends State<LoginDrawer> {
     );
   }
 
-  ElevatedButton obtenerBotonIniciarSesion() {
+  ElevatedButton getLoginButton() {
     return ElevatedButton(
-        style: ButtonStyle(
-          padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-          textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ),
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            formKey.currentState!.save();
-            validarToken(usuarioIngresado, contrasenaIngresada);
-          }
-        },
-        child: Text("Iniciar Sesión"));
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+        textStyle: MaterialStateProperty.all(const TextStyle(fontWeight: FontWeight.bold)),
+        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+      ),
+      onPressed: () {
+        if (formKey.currentState!.validate()) {
+          formKey.currentState!.save();
+          validarToken(usuarioIngresado, contrasenaIngresada);
+        }
+      },
+      child: Text("Iniciar Sesión")
+    );
   }
 
 
