@@ -1,4 +1,5 @@
 import 'package:jm_alpaca/drawer/compra/CompraBrosa.dart';
+import 'package:jm_alpaca/drawer/compra/NuevaCompra.dart';
 import 'package:jm_alpaca/drawer/home/home.dart';
 import 'package:jm_alpaca/drawer/login/LoginScreen.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
           LoginDrawer.ruta: (BuildContext context) => LoginDrawer(),
           HomeDrawer.ruta: (BuildContext context) => HomeDrawer(),
           SignUpDrawer.ruta: (BuildContext context) => SignUpDrawer(),
-          CompraBrosaDrawer.ruta: (BuildContext context) => CompraBrosaDrawer()
+          CompraBrosaDrawer.ruta: (BuildContext context) => CompraBrosaDrawer(),
+          NuevaCompraDrawer.ruta: (BuildContext context) => NuevaCompraDrawer()
         });
   }
 }

@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.4
   shared_preferences: ^2.0.8
   simple_animations: ^4.0.1
+  syncfusion_flutter_datepicker: ^19.3.48
 
 dev_dependencies:
   flutter_test:

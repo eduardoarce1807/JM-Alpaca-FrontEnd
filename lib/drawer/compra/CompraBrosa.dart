@@ -12,6 +12,7 @@ class CompraBrosaDrawer extends StatefulWidget {
 
 class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
 
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<Widget> listCompraBrosa = <Widget>[];
 
   @override
@@ -25,6 +26,20 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: <Widget>[
+              SizedBox(height: 20,),
+              ElevatedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+                  textStyle: MaterialStateProperty.all(const TextStyle(fontWeight: FontWeight.bold)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                ),
+                onPressed: () {
+                  print("Nueva Compra");
+                  Navigator.pushNamed(context, '/compra2');
+                },
+                child: Text("Nueva Compra")
+              ),
+              SizedBox(height: 20,),
               DataTable(
                 
                 columns: const <DataColumn>[

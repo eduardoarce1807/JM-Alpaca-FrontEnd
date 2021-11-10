@@ -125,7 +125,7 @@ class _SignUpDrawer extends State<SignUpDrawer> {
                     TextButton(
                       onPressed: () {
                         print('Login');
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, '/');
                       },
                       child: Text('Inicia Sesión'),
                     )

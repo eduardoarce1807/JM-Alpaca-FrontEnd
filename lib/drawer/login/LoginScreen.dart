@@ -71,6 +71,7 @@ class _LoginDrawer extends State<LoginDrawer> {
                     Text("Login", style: TextStyle(color: Color.fromRGBO(49, 39, 79, 1), fontWeight: FontWeight.bold, fontSize: 30),),
                     SizedBox(height: 30,),
                     Container(
+                      width: 400,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
