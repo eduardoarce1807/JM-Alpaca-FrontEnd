@@ -1,5 +1,5 @@
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jm_alpaca/drawer/compra/globals.dart' as globals;
 import 'package:jm_alpaca/drawer/compra/model/CompraBrosa.dart';
 import 'package:jm_alpaca/drawer/compra/provider/CompraBrosa.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,9 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
   TextEditingController cDescuento = new TextEditingController();
 
   int cantidad = 0;
-  int peso = 0;
+  double peso = 0;
+  double pesoKilos = 0;
+  double pesoLibras = 0;
   int descuento = 0;
 
   String date = "";
@@ -246,6 +248,7 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
                                       print("Descuento: ${cDescuento.text}");
                                       print(
                                           "Fecha: ${selectedDate.day}/${selectedDate.month}/${selectedDate.year}");
+                                      guardarCompra();
                                     }
                                   },
                                 )),
@@ -474,7 +477,7 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
         hintStyle: TextStyle(color: Colors.grey),
       ),
       onSaved: (value) {
-        peso = int.parse(value!);
+        peso = double.parse(value!);
       },
     );
   }
@@ -563,5 +566,39 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
         listaTipoDescuentoId.add(tdr.tipoDescuentoList[i].id);
       }
     });
+  }
+
+  //Function
+
+  guardarCompra() async {
+    if (unidadDeMasa == "Kilogramo") {
+      pesoKilos = peso;
+      pesoLibras = double.parse((peso * 2.205).toStringAsFixed(2));
+    } else if (unidadDeMasa == "Libra") {
+      pesoLibras = peso;
+      pesoKilos = double.parse((peso / 2.205).toStringAsFixed(2));
+    }
+
+    fecha = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+
+    CompraModel cm = CompraModel.fromValues(
+        proveedorId,
+        fecha,
+        unidadDeMasa,
+        productoId,
+        tipoDescuentoId,
+        cantidad,
+        pesoKilos,
+        pesoLibras,
+        descuento);
+
+    CompraProvider cp = CompraProvider();
+
+    CompraResponse cr = await cp.crearCompra(cm);
+
+    globals.ultimaCompraId = cr.compra.id;
+    print(globals.ultimaCompraId);
+
+    Navigator.pushNamed(context, '/listaDePesos');
   }
 }

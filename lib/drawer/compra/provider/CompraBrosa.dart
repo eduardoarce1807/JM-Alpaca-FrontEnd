@@ -94,3 +94,33 @@ class TipoDescuentoProvider {
     return tipoDescuentoResponse;
   }
 }
+
+class CompraProvider {
+  Future<CompraResponse> crearCompra(CompraModel compra) async {
+    var url = Uri.parse("http://10.0.2.2:8282/api/compra/create");
+
+    print("Dentro del provider (compra).");
+
+    var responseHttp = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "proveedorId": compra.proveedorId,
+          "fecha": compra.fecha,
+          "unidadDeMasa": compra.unidadDeMasa,
+          "productoId": compra.productoId,
+          "tipoDescuentoId": compra.tipoDescuentoId,
+          "cantidad": compra.cantidad,
+          "pesoKilos": compra.pesoKilos,
+          "pesoLibras": compra.pesoLibras,
+          "descuento": compra.descuento
+        }));
+
+    String rawResponse = utf8.decode(responseHttp.bodyBytes);
+
+    var jsonResponse = jsonDecode(rawResponse);
+
+    CompraResponse compraResponse = CompraResponse.fromAPI(jsonResponse);
+
+    return compraResponse;
+  }
+}

@@ -9,8 +9,8 @@ class ProductoResponse {
 
   ProductoResponse.fromAPI(Map jsonProductoResponse) {
     for (int i = 0; i < jsonProductoResponse["productoList"].length; i++) {
-      ProductoModel cm = ProductoModel(jsonProductoResponse["productoList"][i]);
-      this.productoList.add(cm);
+      ProductoModel pm = ProductoModel(jsonProductoResponse["productoList"][i]);
+      this.productoList.add(pm);
     }
   }
 }
@@ -56,6 +56,14 @@ class TipoDescuentoResponse {
           TipoDescuentoModel(jsonTipoDescuentoResponse["tipoDescuentoList"][i]);
       this.tipoDescuentoList.add(tipoDescuento);
     }
+  }
+}
+
+class CompraResponse {
+  CompraModel compra = CompraModel.fromValues("", "", "", "", "", 0, 0, 0, 0);
+  CompraResponse.fromAPI(Map jsonCompraResponse) {
+    CompraModel cm = CompraModel(jsonCompraResponse["savedCompra"]);
+    compra = cm;
   }
 }
 
@@ -150,5 +158,64 @@ class TipoDescuentoModel {
   ) {
     this.id = "";
     this.nombre = nombre;
+  }
+}
+
+class CompraModel {
+  String id = "";
+  String proveedorId = "";
+  String fecha = "";
+  String unidadDeMasa = "";
+  String productoId = "";
+  String tipoDescuentoId = "";
+  int cantidad = 0;
+  double pesoKilos = 0;
+  double pesoLibras = 0;
+  int descuento = 0;
+
+  CompraModel(Map jsonCompraResponse) {
+    this.id = jsonCompraResponse["_id"];
+    this.proveedorId = jsonCompraResponse["proveedorId"];
+    this.fecha = jsonCompraResponse["fecha"];
+    this.unidadDeMasa = jsonCompraResponse["unidadDeMasa"];
+    this.productoId = jsonCompraResponse["productoId"];
+    this.tipoDescuentoId = jsonCompraResponse["tipoDescuentoId"];
+    this.cantidad = jsonCompraResponse["cantidad"];
+    //Comprobar si la respuesta vuelve como double o int
+    if (jsonCompraResponse["pesoKilos"].runtimeType == double) {
+      this.pesoKilos = jsonCompraResponse["pesoKilos"];
+    } else if (jsonCompraResponse["pesoKilos"].runtimeType == int) {
+      int aux = jsonCompraResponse["pesoKilos"];
+      this.pesoKilos = aux.toDouble();
+    }
+    if (jsonCompraResponse["pesoLibras"].runtimeType == double) {
+      this.pesoLibras = jsonCompraResponse["pesoLibras"];
+    } else if (jsonCompraResponse["pesoLibras"].runtimeType == int) {
+      int aux = jsonCompraResponse["pesoLibras"];
+      this.pesoLibras = aux.toDouble();
+    }
+    this.descuento = jsonCompraResponse["descuento"];
+  }
+
+  CompraModel.fromValues(
+      String proveedorId,
+      String fecha,
+      String unidadDeMasa,
+      String productoId,
+      String tipoDescuentoId,
+      int cantidad,
+      double pesoKilos,
+      double pesoLibras,
+      int descuento) {
+    this.id = "";
+    this.proveedorId = proveedorId;
+    this.fecha = fecha;
+    this.unidadDeMasa = unidadDeMasa;
+    this.productoId = productoId;
+    this.tipoDescuentoId = tipoDescuentoId;
+    this.cantidad = cantidad;
+    this.pesoKilos = pesoKilos;
+    this.pesoLibras = pesoLibras;
+    this.descuento = descuento;
   }
 }

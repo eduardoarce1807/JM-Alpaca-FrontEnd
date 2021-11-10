@@ -7,7 +7,7 @@ class AuthProvider {
   Future<AuthResponse> obtenerToken(String usuario, String password) async {
     var url = Uri.parse("http://10.0.2.2:8282/api/usuario/login");
 
-    print("Dentro del provider.");
+    print("Dentro del provider (login).");
 
     var responseHttp =
         await http.post(url, body: {'usuario': usuario, 'password': password});
