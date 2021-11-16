@@ -19,6 +19,24 @@ class ProductoProvider {
 
     return productoResponse;
   }
+
+  Future<SingleProductoResponse> obtenerProductoPorId(String productoId) async {
+    var url = Uri.parse("http://10.0.2.2:8282/api/producto/$productoId");
+
+    print("Dentro del provider (producto single).");
+
+    var responseHttp =
+        await http.get(url, headers: {'Content-Type': 'application/json'});
+
+    String rawResponse = utf8.decode(responseHttp.bodyBytes);
+
+    var jsonResponse = jsonDecode(rawResponse);
+
+    SingleProductoResponse productoResponse =
+        SingleProductoResponse.fromAPI(jsonResponse);
+
+    return productoResponse;
+  }
 }
 
 class ProveedorProvider {
@@ -122,5 +140,25 @@ class CompraProvider {
     CompraResponse compraResponse = CompraResponse.fromAPI(jsonResponse);
 
     return compraResponse;
+  }
+}
+
+class PesoProvider {
+  Future<PesosPorProviderResponse> pesosPorProvider(String proveedorId) async {
+    var url =
+        Uri.parse("http://10.0.2.2:8282/api/compraProveedorId/$proveedorId");
+
+    print("Dentro del provider (pesosPorProvider).");
+
+    var responseHttp = await http.get(url);
+
+    String rawResponse = utf8.decode(responseHttp.bodyBytes);
+
+    var jsonResponse = jsonDecode(rawResponse);
+
+    PesosPorProviderResponse pesosPorProviderResponse =
+        PesosPorProviderResponse.fromAPI(jsonResponse);
+
+    return pesosPorProviderResponse;
   }
 }

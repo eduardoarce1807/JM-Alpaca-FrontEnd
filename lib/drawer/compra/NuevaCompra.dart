@@ -597,7 +597,9 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
     CompraResponse cr = await cp.crearCompra(cm);
 
     globals.ultimaCompraId = cr.compra.id;
+    globals.proveedorActualId = cr.compra.proveedorId;
     print(globals.ultimaCompraId);
+    print(globals.proveedorActualId);
 
     Navigator.pushNamed(context, '/listaDePesos');
   }
