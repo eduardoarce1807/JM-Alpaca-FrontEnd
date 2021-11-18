@@ -69,9 +69,19 @@ class TipoDescuentoResponse {
 }
 
 class CompraResponse {
-  CompraModel compra = CompraModel.fromValues("", "", "", "", "", 0, 0, 0, 0);
+  CompraModel compra =
+      CompraModel.fromValues("", "", "", "", "", "", 0, 0, 0, 0, 0, false);
   CompraResponse.fromAPI(Map jsonCompraResponse) {
     CompraModel cm = CompraModel(jsonCompraResponse["savedCompra"]);
+    compra = cm;
+  }
+}
+
+class CompraResponseUpdate {
+  CompraModel compra =
+      CompraModel.fromValues("", "", "", "", "", "", 0, 0, 0, 0, 0, false);
+  CompraResponseUpdate.fromAPI(Map jsonCompraResponse) {
+    CompraModel cm = CompraModel(jsonCompraResponse["updatedCompra"]);
     compra = cm;
   }
 }
@@ -88,6 +98,81 @@ class PesosPorProviderResponse {
           jsonPesosPorProviderResponse["comprasProveedorId"][i]);
       this.pesosPorProviderResponseList.add(pesosPorProvider);
     }
+  }
+}
+
+class DetalleCompraResponseCreate {
+  DetalleCompraModel detalleCompra =
+      DetalleCompraModel.fromValues("", "", "", 0, 0, 0, 0, 0, 0, 0, "", false);
+  DetalleCompraResponseCreate.fromAPI(Map jsonCompraResponse) {
+    DetalleCompraModel dcm =
+        DetalleCompraModel(jsonCompraResponse["savedDetalleCompra"]);
+    detalleCompra = dcm;
+  }
+}
+
+class DetalleCompraResponse {
+  List<DetalleCompraModel> detalleCompraList = <DetalleCompraModel>[];
+
+  DetalleCompraResponse.fromAPI(Map jsonDetalleCompraResponse) {
+    for (int i = 0;
+        i < jsonDetalleCompraResponse["comprasProveedorId"].length;
+        i++) {
+      DetalleCompraModel detalleCompra = DetalleCompraModel(
+          jsonDetalleCompraResponse["comprasProveedorId"][i]);
+      this.detalleCompraList.add(detalleCompra);
+    }
+  }
+}
+
+class DetalleCompraResponseUpdate {
+  DetalleCompraModel detalleCompra =
+      DetalleCompraModel.fromValues("", "", "", 0, 0, 0, 0, 0, 0, 0, "", false);
+  DetalleCompraResponseUpdate.fromAPI(Map jsonDetalleCompraResponse) {
+    DetalleCompraModel dcm =
+        DetalleCompraModel(jsonDetalleCompraResponse["updatedDetalleCompra"]);
+    detalleCompra = dcm;
+  }
+}
+
+class CompraTotalResponse {
+  List<CompraTotalModel> compraTotalList = <CompraTotalModel>[];
+
+  CompraTotalResponse.fromAPI(Map jsonCompraTotalResponse) {
+    for (int i = 0;
+        i < jsonCompraTotalResponse["compraTotalList"].length;
+        i++) {
+      CompraTotalModel compraTotal =
+          CompraTotalModel(jsonCompraTotalResponse["compraTotalList"][i]);
+      this.compraTotalList.add(compraTotal);
+    }
+  }
+}
+
+class CompraTotalResponsePorProveedor {
+  CompraTotalModel compraTotal = CompraTotalModel.fromValues("", "", 0, "");
+  CompraTotalResponsePorProveedor.fromAPI(Map jsonCompraTotalResponse) {
+    CompraTotalModel ctm =
+        CompraTotalModel(jsonCompraTotalResponse["compraTotalsProveedorId"][0]);
+    compraTotal = ctm;
+  }
+}
+
+class CompraTotalResponseCreate {
+  CompraTotalModel compraTotal = CompraTotalModel.fromValues("", "", 0, "");
+  CompraTotalResponseCreate.fromAPI(Map jsonCompraTotalResponse) {
+    CompraTotalModel ctm =
+        CompraTotalModel(jsonCompraTotalResponse["savedCompraTotal"]);
+    compraTotal = ctm;
+  }
+}
+
+class CompraTotalResponseUpdate {
+  CompraTotalModel compraTotal = CompraTotalModel.fromValues("", "", 0, "");
+  CompraTotalResponseUpdate.fromAPI(Map jsonCompraTotalResponse) {
+    CompraTotalModel ctm =
+        CompraTotalModel(jsonCompraTotalResponse["updatedCompraTotal"]);
+    compraTotal = ctm;
   }
 }
 
@@ -195,7 +280,9 @@ class CompraModel {
   int cantidad = 0;
   double pesoKilos = 0;
   double pesoLibras = 0;
+  double pesoNeto = 0;
   int descuento = 0;
+  bool saved = false;
 
   CompraModel(Map jsonCompraResponse) {
     this.id = jsonCompraResponse["_id"];
@@ -218,10 +305,18 @@ class CompraModel {
       int aux = jsonCompraResponse["pesoLibras"];
       this.pesoLibras = aux.toDouble();
     }
+    if (jsonCompraResponse["pesoNeto"].runtimeType == double) {
+      this.pesoNeto = jsonCompraResponse["pesoNeto"];
+    } else if (jsonCompraResponse["pesoNeto"].runtimeType == int) {
+      int aux = jsonCompraResponse["pesoNeto"];
+      this.pesoNeto = aux.toDouble();
+    }
     this.descuento = jsonCompraResponse["descuento"];
+    this.saved = jsonCompraResponse["saved"];
   }
 
   CompraModel.fromValues(
+      String id,
       String proveedorId,
       String fecha,
       String unidadDeMasa,
@@ -230,8 +325,10 @@ class CompraModel {
       int cantidad,
       double pesoKilos,
       double pesoLibras,
-      int descuento) {
-    this.id = "";
+      double pesoNeto,
+      int descuento,
+      bool saved) {
+    this.id = id;
     this.proveedorId = proveedorId;
     this.fecha = fecha;
     this.unidadDeMasa = unidadDeMasa;
@@ -240,7 +337,9 @@ class CompraModel {
     this.cantidad = cantidad;
     this.pesoKilos = pesoKilos;
     this.pesoLibras = pesoLibras;
+    this.pesoNeto = pesoNeto;
     this.descuento = descuento;
+    this.saved = saved;
   }
 }
 
@@ -254,7 +353,9 @@ class PesosPorProviderModel {
   int cantidad = 0;
   double pesoKilos = 0;
   double pesoLibras = 0;
+  double pesoNeto = 0;
   int descuento = 0;
+  bool saved = false;
 
   PesosPorProviderModel(Map jsonPesosPorProviderResponse) {
     this.id = jsonPesosPorProviderResponse["_id"];
@@ -277,7 +378,14 @@ class PesosPorProviderModel {
       int aux = jsonPesosPorProviderResponse["pesoLibras"];
       this.pesoLibras = aux.toDouble();
     }
+    if (jsonPesosPorProviderResponse["pesoNeto"].runtimeType == double) {
+      this.pesoNeto = jsonPesosPorProviderResponse["pesoNeto"];
+    } else if (jsonPesosPorProviderResponse["pesoNeto"].runtimeType == int) {
+      int aux = jsonPesosPorProviderResponse["pesoNeto"];
+      this.pesoNeto = aux.toDouble();
+    }
     this.descuento = jsonPesosPorProviderResponse["descuento"];
+    this.saved = jsonPesosPorProviderResponse["saved"];
   }
 
   PesosPorProviderModel.fromValues(
@@ -289,7 +397,9 @@ class PesosPorProviderModel {
       int cantidad,
       double pesoKilos,
       double pesoLibras,
-      int descuento) {
+      double pesoNeto,
+      int descuento,
+      bool saved) {
     this.id = "";
     this.proveedorId = proveedorId;
     this.fecha = fecha;
@@ -299,6 +409,118 @@ class PesosPorProviderModel {
     this.cantidad = cantidad;
     this.pesoKilos = pesoKilos;
     this.pesoLibras = pesoLibras;
+    this.pesoNeto = pesoNeto;
     this.descuento = descuento;
+    this.saved = saved;
+  }
+}
+
+class DetalleCompraModel {
+  String id = "";
+  String productoId = "";
+  String proveedorId = "";
+  int cantidadTotal = 0;
+  double pesoKilosTotal = 0;
+  double pesoLibrasTotal = 0;
+  double pesoNetoTotal = 0;
+  int descuentoTotal = 0;
+  double precio = 0;
+  double total = 0;
+  String fecha = "";
+  bool saved = false;
+
+  DetalleCompraModel(Map jsonDetalleCompraResponse) {
+    this.id = jsonDetalleCompraResponse["_id"];
+    this.productoId = jsonDetalleCompraResponse["productoId"];
+    this.proveedorId = jsonDetalleCompraResponse["proveedorId"];
+    this.cantidadTotal = jsonDetalleCompraResponse["cantidadTotal"];
+    if (jsonDetalleCompraResponse["pesoKilosTotal"].runtimeType == double) {
+      this.pesoKilosTotal = jsonDetalleCompraResponse["pesoKilosTotal"];
+    } else if (jsonDetalleCompraResponse["pesoKilosTotal"].runtimeType == int) {
+      int aux = jsonDetalleCompraResponse["pesoKilosTotal"];
+      this.pesoKilosTotal = aux.toDouble();
+    }
+    if (jsonDetalleCompraResponse["pesoLibrasTotal"].runtimeType == double) {
+      this.pesoLibrasTotal = jsonDetalleCompraResponse["pesoLibrasTotal"];
+    } else if (jsonDetalleCompraResponse["pesoLibrasTotal"].runtimeType ==
+        int) {
+      int aux = jsonDetalleCompraResponse["pesoLibrasTotal"];
+      this.pesoLibrasTotal = aux.toDouble();
+    }
+    if (jsonDetalleCompraResponse["pesoNetoTotal"].runtimeType == double) {
+      this.pesoNetoTotal = jsonDetalleCompraResponse["pesoNetoTotal"];
+    } else if (jsonDetalleCompraResponse["pesoNetoTotal"].runtimeType == int) {
+      int aux = jsonDetalleCompraResponse["pesoNetoTotal"];
+      this.pesoNetoTotal = aux.toDouble();
+    }
+    this.descuentoTotal = jsonDetalleCompraResponse["descuentoTotal"];
+    if (jsonDetalleCompraResponse["precio"].runtimeType == double) {
+      this.precio = jsonDetalleCompraResponse["precio"];
+    } else if (jsonDetalleCompraResponse["precio"].runtimeType == int) {
+      int aux = jsonDetalleCompraResponse["precio"];
+      this.precio = aux.toDouble();
+    }
+    if (jsonDetalleCompraResponse["total"].runtimeType == double) {
+      this.total = jsonDetalleCompraResponse["total"];
+    } else if (jsonDetalleCompraResponse["total"].runtimeType == int) {
+      int aux = jsonDetalleCompraResponse["total"];
+      this.total = aux.toDouble();
+    }
+    this.fecha = jsonDetalleCompraResponse["fecha"];
+    this.saved = jsonDetalleCompraResponse["saved"];
+  }
+
+  DetalleCompraModel.fromValues(
+      String id,
+      String productoId,
+      String proveedorId,
+      int cantidadTotal,
+      double pesoKilosTotal,
+      double pesoLibrasTotal,
+      double pesoNetoTotal,
+      int descuentoTotal,
+      double precio,
+      double total,
+      String fecha,
+      bool saved) {
+    this.id = id;
+    this.productoId = productoId;
+    this.proveedorId = proveedorId;
+    this.cantidadTotal = cantidadTotal;
+    this.pesoKilosTotal = pesoKilosTotal;
+    this.pesoLibrasTotal = pesoLibrasTotal;
+    this.pesoNetoTotal = pesoNetoTotal;
+    this.descuentoTotal = descuentoTotal;
+    this.precio = precio;
+    this.total = total;
+    this.fecha = fecha;
+    this.saved = saved;
+  }
+}
+
+class CompraTotalModel {
+  String id = "";
+  String proveedorId = "";
+  double total = 0;
+  String fecha = "";
+
+  CompraTotalModel(Map jsonCompraTotalResponse) {
+    this.id = jsonCompraTotalResponse["_id"];
+    this.proveedorId = jsonCompraTotalResponse["proveedorId"];
+    if (jsonCompraTotalResponse["total"].runtimeType == double) {
+      this.total = jsonCompraTotalResponse["total"];
+    } else if (jsonCompraTotalResponse["total"].runtimeType == int) {
+      int aux = jsonCompraTotalResponse["total"];
+      this.total = aux.toDouble();
+    }
+    this.fecha = jsonCompraTotalResponse["fecha"];
+  }
+
+  CompraTotalModel.fromValues(
+      String id, String proveedorId, double total, String fecha) {
+    this.id = id;
+    this.proveedorId = proveedorId;
+    this.total = total;
+    this.fecha = fecha;
   }
 }

@@ -28,6 +28,7 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
   double peso = 0;
   double pesoKilos = 0;
   double pesoLibras = 0;
+  double pesoNeto = 0;
   int descuento = 0;
 
   String date = "";
@@ -539,12 +540,12 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
       SedeProvider sp = SedeProvider();
       SedeResponse sr = await sp.obtenerSedePorId(pr.proveedorList[i].sedeId);
 
-      listaProveedoresIdM.add(persr.personaList[i].id);
-      listaProveedoresM.add(persr.personaList[i].nombres +
+      listaProveedoresIdM.add(pr.proveedorList[i].id);
+      listaProveedoresM.add(persr.personaList[0].nombres +
           " " +
-          persr.personaList[i].apellidos +
+          persr.personaList[0].apellidos +
           " | " +
-          sr.sedeList[i].nombre);
+          sr.sedeList[0].nombre);
     }
 
     setState(() {
@@ -579,9 +580,12 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
       pesoKilos = double.parse((peso / 2.205).toStringAsFixed(2));
     }
 
+    pesoNeto = double.parse((pesoLibras - descuento).toStringAsFixed(2));
+
     fecha = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
 
     CompraModel cm = CompraModel.fromValues(
+        "",
         proveedorId,
         fecha,
         unidadDeMasa,
@@ -590,7 +594,9 @@ class _NuevaCompraDrawer extends State<NuevaCompraDrawer> {
         cantidad,
         pesoKilos,
         pesoLibras,
-        descuento);
+        pesoNeto,
+        descuento,
+        false);
 
     CompraProvider cp = CompraProvider();
 

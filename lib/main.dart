@@ -1,6 +1,7 @@
 import 'package:jm_alpaca/drawer/compra/CompraBrosa.dart';
 import 'package:jm_alpaca/drawer/compra/ListaDePesos.dart';
 import 'package:jm_alpaca/drawer/compra/NuevaCompra.dart';
+import 'package:jm_alpaca/drawer/compra/DetalleCompra.dart';
 import 'package:jm_alpaca/drawer/home/home.dart';
 import 'package:jm_alpaca/drawer/login/LoginScreen.dart';
 
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
           SignUpDrawer.ruta: (BuildContext context) => SignUpDrawer(),
           CompraBrosaDrawer.ruta: (BuildContext context) => CompraBrosaDrawer(),
           NuevaCompraDrawer.ruta: (BuildContext context) => NuevaCompraDrawer(),
-          ListaDePesos.ruta: (BuildContext context) => ListaDePesos()
+          ListaDePesos.ruta: (BuildContext context) => ListaDePesos(),
+          DetalleCompra.ruta: (BuildContext context) => DetalleCompra()
         });
   }
 }

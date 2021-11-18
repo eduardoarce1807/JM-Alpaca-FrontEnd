@@ -10,7 +10,10 @@ class CommonDrawer {
       Icon icono, String nombre, String ruta, BuildContext bContext) {
     return ListTile(
       leading: icono,
-      title: Text(nombre, style: TextStyle(fontSize: 15),),
+      title: Text(
+        nombre,
+        style: TextStyle(fontSize: 15),
+      ),
       onTap: () {
         Navigator.pushNamed(bContext, ruta);
       },
@@ -22,20 +25,17 @@ class CommonDrawer {
       child: ListView(
         children: <Widget>[
           new UserAccountsDrawerHeader(
-            accountName: Text("Parcial 1 - Eduardo Arce"),
-            accountEmail: Text("eduardo.arce1807@gmail.com"),
+            accountName: Text("Eduardo Arce"),
+            accountEmail: Text("eduardoarce@upeu.edu.pe"),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMBecQQO441ONmYqdn3jeBsfdy6SOD2Cg4_Vu7vHvRpxT0pZMyCt5NEXpm60nVCFQUbIo&usqp=CAU'),
+                    image: AssetImage('assets/images/sidemenu.jpg'),
                     fit: BoxFit.cover)),
           ),
           obtenerElemento(
               Icon(TablerIcons.home), "Home", HomeDrawer.ruta, contexto),
-           obtenerElemento(
-              Icon(TablerIcons.report_money), "Compra Brosa", CompraBrosaDrawer.ruta, contexto),
-          obtenerElemento(
-            Icon(TablerIcons.user), "Login", LoginDrawer.ruta, contexto),
+          obtenerElemento(Icon(TablerIcons.report_money), "Compra Brosa",
+              CompraBrosaDrawer.ruta, contexto),
         ],
       ),
     );

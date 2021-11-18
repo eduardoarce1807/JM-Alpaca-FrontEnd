@@ -1,5 +1,7 @@
 import 'package:jm_alpaca/drawer/CommonDrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:jm_alpaca/drawer/compra/model/CompraBrosa.dart';
+import 'package:jm_alpaca/drawer/compra/provider/CompraBrosa.dart';
 
 class CompraBrosaDrawer extends StatefulWidget {
   static String ruta = "/compra";
@@ -11,110 +13,249 @@ class CompraBrosaDrawer extends StatefulWidget {
 }
 
 class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  List<Widget> listCompraBrosa = <Widget>[];
+
+  List<CompraTotalModel> comprasTotales = <CompraTotalModel>[];
+  List<String> listaProveedoresString = <String>[];
+  List<String> listaProveedores = <String>[];
+  List<String> listaProveedoresId = <String>[];
+
+  double totalCompras = 0;
+
+  int _selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    obtenerComprasTotales();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      print(_selectedIndex);
+      if (_selectedIndex == 0) {
+        Navigator.pushNamed(context, '/compra2');
+      } else if (_selectedIndex == 1) {
+        Navigator.pushNamed(context, '/home');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Compra Brosa"),
+          title: InkWell(
+            child: Text("CompraBrosa"),
+            onTap: () {
+              obtenerComprasTotales();
+            },
+          ),
         ),
         drawer: CommonDrawer.obtenerDrawer(context),
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
+        body: SingleChildScrollView(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 20,),
-              ElevatedButton(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                  textStyle: MaterialStateProperty.all(const TextStyle(fontWeight: FontWeight.bold)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                ),
-                onPressed: () {
-                  print("Nueva Compra");
-                  Navigator.pushNamed(context, '/compra2');
-                },
-                child: Text("Nueva Compra")
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                //Numero de filas en vertical (fijas)
+                children: buildCellsFija(),
               ),
-              SizedBox(height: 20,),
-              DataTable(
-                
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Proveedor',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    //Numero de filas en vertical (las otras xd)
+                    children: todo(),
                   ),
-                  DataColumn(
-                    label: Text(
-                      'Total',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Fecha',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Opción',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Opción',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-                rows: const <DataRow>[
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('Sarah')),
-                      DataCell(Text('19')),
-                      DataCell(Text('Student')),
-                      DataCell(Text('Student')),
-                      DataCell(Text('Student')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('Janine')),
-                      DataCell(Text('43')),
-                      DataCell(Text('Professor')),
-                      DataCell(Text('Student')),
-                      DataCell(Text('Student')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('William')),
-                      DataCell(Text('27')),
-                      DataCell(Text('Associate Professor')),
-                      DataCell(Text('Student')),
-                      DataCell(Text('Student')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('William')),
-                      DataCell(Text('27')),
-                      DataCell(Text('Associate Professor')),
-                      DataCell(Text('Student')),
-                      DataCell(Text('Student')),
-                    ],
-                  ),
-                ],
-              )
+                ),
+              ),
             ],
           ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Agregar Producto',
+              backgroundColor: Color.fromRGBO(49, 39, 79, 1),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Colors.green,
+            )
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white,
+          backgroundColor: Color.fromRGBO(49, 39, 79, 1),
+          onTap: _onItemTapped,
         ));
+  }
+
+  List<Widget> buildCellsFija() {
+    List<Widget> a = <Widget>[];
+
+    a.add(Container(
+      alignment: Alignment.center,
+      width: 150.0,
+      height: 60.0,
+      color: Colors.black12,
+      margin: EdgeInsets.all(4.0),
+      child: Text("Proveedor", style: Theme.of(context).textTheme.headline6),
+    ));
+
+    var b = List.generate(
+        comprasTotales.length,
+        (index) => Container(
+              alignment: Alignment.center,
+              width: 150.0,
+              height: 60.0,
+              color: Colors.black12,
+              margin: EdgeInsets.all(4.0),
+              child: Text(listaProveedores[index]),
+            ));
+
+    for (int i = 0; i < b.length; i++) {
+      a.add(b[i]);
+    }
+
+    a.add(Container(
+      alignment: Alignment.center,
+      width: 150.0,
+      height: 60.0,
+      color: Colors.black12,
+      margin: EdgeInsets.all(4.0),
+      child:
+          Text("Total Compras", style: Theme.of(context).textTheme.headline6),
+    ));
+    return a;
+  }
+
+  List<Widget> todo() {
+    List<Widget> rows = <Widget>[];
+    List<Widget> top = <Widget>[];
+
+    top = buildCellsFlexibleTop();
+
+    rows.add(Row(
+      children: top,
+    ));
+
+    for (int i = 0; i < comprasTotales.length; i++) {
+      print("lista compras total length: ${comprasTotales.length}");
+      rows.add(Row(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            width: 150.0,
+            height: 60.0,
+            color: Colors.black12,
+            margin: EdgeInsets.all(4.0),
+            child: Text("${comprasTotales[i].total}"),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: 150.0,
+            height: 60.0,
+            color: Colors.black12,
+            margin: EdgeInsets.all(4.0),
+            child: Text((comprasTotales[i].fecha).substring(0, 10)),
+          ),
+        ],
+      ));
+    }
+
+    //totales
+    rows.add(Row(
+      children: <Widget>[
+        Container(
+          alignment: Alignment.center,
+          width: 150.0,
+          height: 60.0,
+          color: Colors.black12,
+          margin: EdgeInsets.all(4.0),
+          child: Text("$totalCompras"),
+        ),
+        Container(
+          alignment: Alignment.center,
+          width: 150.0,
+          height: 60.0,
+          color: Colors.black12,
+          margin: EdgeInsets.all(4.0),
+          child: Text("Fecha"),
+        ),
+      ],
+    ));
+
+    return rows;
+  }
+
+  List<Widget> buildCellsFlexibleTop() {
+    List<Widget> a = <Widget>[];
+
+    a.add(Container(
+      alignment: Alignment.center,
+      width: 150.0,
+      height: 60.0,
+      color: Colors.black12,
+      margin: EdgeInsets.all(4.0),
+      child: Text("Total (S/.)", style: Theme.of(context).textTheme.headline6),
+    ));
+
+    a.add(Container(
+      alignment: Alignment.center,
+      width: 150.0,
+      height: 60.0,
+      color: Colors.black12,
+      margin: EdgeInsets.all(4.0),
+      child: Text("Fecha", style: Theme.of(context).textTheme.headline6),
+    ));
+
+    return a;
+  }
+
+  Future obtenerComprasTotales() async {
+    List<CompraTotalModel> comprasTotalesX = <CompraTotalModel>[];
+
+    CompraTotalProvider ctp = CompraTotalProvider();
+    CompraTotalResponse ctr = await ctp.obtenerComprasTotales();
+
+    for (int i = 0; i < ctr.compraTotalList.length; i++) {
+      comprasTotalesX.add(ctr.compraTotalList[i]);
+    }
+
+    //
+
+    List<String> listaProveedoresM = <String>[];
+
+    ProveedorProvider pp = ProveedorProvider();
+    ProveedorResponse pr = await pp.obtenerProveedores();
+
+    for (int i = 0; i < pr.proveedorList.length; i++) {
+      PersonaProvider persp = PersonaProvider();
+      PersonaResponse persr =
+          await persp.obtenerPersonaPorId(pr.proveedorList[i].personaId);
+
+      SedeProvider sp = SedeProvider();
+      SedeResponse sr = await sp.obtenerSedePorId(pr.proveedorList[i].sedeId);
+
+      listaProveedoresM.add(persr.personaList[0].nombres +
+          " " +
+          persr.personaList[0].apellidos +
+          " | " +
+          sr.sedeList[0].nombre);
+    }
+    setState(() {
+      comprasTotales = comprasTotalesX;
+      listaProveedores = listaProveedoresM;
+      totalCompras = 0;
+      for (int i = 0; i < comprasTotales.length; i++) {
+        totalCompras = totalCompras + comprasTotales[i].total;
+      }
+    });
   }
 }
