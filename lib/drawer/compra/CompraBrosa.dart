@@ -79,7 +79,7 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add),
-              label: 'Agregar Producto',
+              label: 'Nueva Compra',
               backgroundColor: Color.fromRGBO(49, 39, 79, 1),
             ),
             BottomNavigationBarItem(
@@ -155,7 +155,8 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
             height: 60.0,
             color: Colors.black12,
             margin: EdgeInsets.all(4.0),
-            child: Text("${comprasTotales[i].total}"),
+            child: Text(
+                "${double.parse((comprasTotales[i].total).toStringAsFixed(2))}"),
           ),
           Container(
             alignment: Alignment.center,
@@ -178,7 +179,8 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           height: 60.0,
           color: Colors.black12,
           margin: EdgeInsets.all(4.0),
-          child: Text("$totalCompras"),
+          child: Text("${double.parse((totalCompras).toStringAsFixed(2))}",
+              style: Theme.of(context).textTheme.headline6),
         ),
         Container(
           alignment: Alignment.center,
@@ -186,7 +188,7 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           height: 60.0,
           color: Colors.black12,
           margin: EdgeInsets.all(4.0),
-          child: Text("Fecha"),
+          child: Text("Fecha", style: Theme.of(context).textTheme.headline6),
         ),
       ],
     ));
