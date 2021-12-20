@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 class AuthProvider {
   Future<AuthResponse> obtenerToken(String usuario, String password) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/usuario/login");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/usuario/login");
 
     print("Dentro del provider (login).");
 

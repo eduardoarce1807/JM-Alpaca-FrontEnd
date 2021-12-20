@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 class ProductoProvider {
   Future<ProductoResponse> obtenerProductos() async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/producto/all");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/producto/all");
 
     print("Dentro del provider (producto).");
 
@@ -21,7 +22,8 @@ class ProductoProvider {
   }
 
   Future<SingleProductoResponse> obtenerProductoPorId(String productoId) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/producto/$productoId");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/producto/$productoId");
 
     print("Dentro del provider (producto single).");
 
@@ -41,7 +43,8 @@ class ProductoProvider {
 
 class ProveedorProvider {
   Future<ProveedorResponse> obtenerProveedores() async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/proveedor/all");
+    var url =
+        Uri.parse("https://floating-coast-42195.herokuapp.com/api/proveedor/all");
 
     print("Dentro del provider (proveedor).");
 
@@ -60,7 +63,8 @@ class ProveedorProvider {
 
 class PersonaProvider {
   Future<PersonaResponse> obtenerPersonaPorId(String id) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/persona/" + id);
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/persona/" + id);
 
     print("Dentro del provider (persona).");
 
@@ -78,7 +82,8 @@ class PersonaProvider {
 
 class SedeProvider {
   Future<SedeResponse> obtenerSedePorId(String id) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/sede/" + id);
+    var url =
+        Uri.parse("https://floating-coast-42195.herokuapp.com/api/sede/" + id);
 
     print("Dentro del provider (sede).");
 
@@ -96,7 +101,8 @@ class SedeProvider {
 
 class TipoDescuentoProvider {
   Future<TipoDescuentoResponse> obtenerTipoDescuento() async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/tipoDescuento/all");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/tipoDescuento/all");
 
     print("Dentro del provider (tipo descuento).");
 
@@ -115,7 +121,8 @@ class TipoDescuentoProvider {
 
 class CompraProvider {
   Future<CompraResponse> crearCompra(CompraModel compra) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/compra/create");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/compra/create");
 
     print("Dentro del provider (compra).");
 
@@ -145,7 +152,8 @@ class CompraProvider {
   }
 
   Future<CompraResponseUpdate> updateCompra(CompraModel compra) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/compra/edit");
+    var url =
+        Uri.parse("https://floating-coast-42195.herokuapp.com/api/compra/edit");
 
     print("Dentro del provider (compra update).");
 
@@ -179,8 +187,8 @@ class CompraProvider {
 
 class PesoProvider {
   Future<PesosPorProviderResponse> pesosPorProvider(String proveedorId) async {
-    var url =
-        Uri.parse("http://10.0.2.2:8282/api/compraProveedorId/$proveedorId");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/compraProveedorId/$proveedorId");
 
     print("Dentro del provider (pesosPorProvider).");
 
@@ -201,7 +209,7 @@ class DetalleCompraProvider {
   Future<DetalleCompraResponse> obtenerDetallesCompraPorProveedorId(
       String proveedorId) async {
     var url = Uri.parse(
-        "http://10.0.2.2:8282/api/detalleCompraProveedorId/$proveedorId");
+        "https://floating-coast-42195.herokuapp.com/api/detalleCompraProveedorId/$proveedorId");
 
     print("Dentro del provider (detalle compra por proveedor).");
 
@@ -217,9 +225,29 @@ class DetalleCompraProvider {
     return detalleCompraResponse;
   }
 
+  Future<ComprasResponse> obtenerDetallesCompraPorProveedorIdTrue(
+      String proveedorId) async {
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/compraProveedorIdTrue/$proveedorId");
+
+    print("Dentro del provider (detalle compra por proveedor).");
+
+    var responseHttp = await http.get(url);
+
+    String rawResponse = utf8.decode(responseHttp.bodyBytes);
+
+    var jsonResponse = jsonDecode(rawResponse);
+
+    ComprasResponse detalleCompraResponse =
+        ComprasResponse.fromAPI(jsonResponse);
+
+    return detalleCompraResponse;
+  }
+
   Future<DetalleCompraResponseCreate> crearDetalleCompra(
       DetalleCompraModel detalleCompra) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/detalleCompra/create");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/detalleCompra/create");
 
     print("Dentro del provider (detalle compra create).");
 
@@ -251,7 +279,8 @@ class DetalleCompraProvider {
 
   Future<DetalleCompraResponseUpdate> updateDetalleCompra(
       DetalleCompraModel detalleCompra) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/detalleCompra/edit");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/detalleCompra/edit");
 
     print("Dentro del provider (detalle compra update).");
 
@@ -285,7 +314,8 @@ class DetalleCompraProvider {
 
 class CompraTotalProvider {
   Future<CompraTotalResponse> obtenerComprasTotales() async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/compraTotal/all");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/compraTotal/all");
 
     print("Dentro del provider (compras totales).");
 
@@ -304,7 +334,7 @@ class CompraTotalProvider {
   Future<CompraTotalResponsePorProveedor> obtenerComprasTotalesPorProveedorId(
       String proveedorId) async {
     var url = Uri.parse(
-        "http://10.0.2.2:8282/api/compraTotalProveedorId/$proveedorId");
+        "https://floating-coast-42195.herokuapp.com/api/compraTotalProveedorId/$proveedorId");
 
     print("Dentro del provider (compra total por proveedor id).");
 
@@ -322,7 +352,8 @@ class CompraTotalProvider {
 
   Future<CompraTotalResponse> createCompraTotal(
       CompraTotalModel compraTotal) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/compraTotal/create");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/compraTotal/create");
 
     print("Dentro del provider (compra total create).");
 
@@ -346,7 +377,8 @@ class CompraTotalProvider {
 
   Future<CompraTotalResponseUpdate> updateCompraTotal(
       CompraTotalModel compraTotal) async {
-    var url = Uri.parse("http://10.0.2.2:8282/api/compraTotal/edit");
+    var url = Uri.parse(
+        "https://floating-coast-42195.herokuapp.com/api/compraTotal/edit");
 
     print("Dentro del provider (compra total update).");
 

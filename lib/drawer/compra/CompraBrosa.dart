@@ -2,6 +2,7 @@ import 'package:jm_alpaca/drawer/CommonDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:jm_alpaca/drawer/compra/model/CompraBrosa.dart';
 import 'package:jm_alpaca/drawer/compra/provider/CompraBrosa.dart';
+import 'globals.dart' as globals;
 
 class CompraBrosaDrawer extends StatefulWidget {
   static String ruta = "/compra";
@@ -101,22 +102,25 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
 
     a.add(Container(
       alignment: Alignment.center,
-      width: 150.0,
+      width: 160.0,
       height: 60.0,
-      color: Colors.black12,
-      margin: EdgeInsets.all(4.0),
-      child: Text("Proveedor", style: Theme.of(context).textTheme.headline6),
+      color: Color.fromRGBO(64, 51, 102, 1),
+      margin: EdgeInsets.all(1.0),
+      child: Text("Proveedor",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
     ));
 
     var b = List.generate(
         comprasTotales.length,
         (index) => Container(
               alignment: Alignment.center,
-              width: 150.0,
+              width: 160.0,
               height: 60.0,
-              color: Colors.black12,
-              margin: EdgeInsets.all(4.0),
-              child: Text(listaProveedores[index]),
+              color: Color.fromRGBO(85, 67, 137, 1),
+              margin: EdgeInsets.all(1.0),
+              child: Text(listaProveedores[index],
+                  style: TextStyle(color: Colors.white, fontSize: 18)),
             ));
 
     for (int i = 0; i < b.length; i++) {
@@ -125,12 +129,13 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
 
     a.add(Container(
       alignment: Alignment.center,
-      width: 150.0,
+      width: 160.0,
       height: 60.0,
-      color: Colors.black12,
-      margin: EdgeInsets.all(4.0),
-      child:
-          Text("Total Compras", style: Theme.of(context).textTheme.headline6),
+      color: Color.fromRGBO(64, 51, 102, 1),
+      margin: EdgeInsets.all(1.0),
+      child: Text("Total Compras",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
     ));
     return a;
   }
@@ -153,8 +158,8 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
             alignment: Alignment.center,
             width: 150.0,
             height: 60.0,
-            color: Colors.black12,
-            margin: EdgeInsets.all(4.0),
+            color: Color.fromRGBO(225, 221, 238, 1),
+            margin: EdgeInsets.all(1.0),
             child: Text(
                 "${double.parse((comprasTotales[i].total).toStringAsFixed(2))}"),
           ),
@@ -162,9 +167,29 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
             alignment: Alignment.center,
             width: 150.0,
             height: 60.0,
-            color: Colors.black12,
-            margin: EdgeInsets.all(4.0),
+            color: Color.fromRGBO(225, 221, 238, 1),
+            margin: EdgeInsets.all(1.0),
             child: Text((comprasTotales[i].fecha).substring(0, 10)),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: 150.0,
+            height: 60.0,
+            color: Color.fromRGBO(225, 221, 238, 1),
+            margin: EdgeInsets.all(1.0),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
+                  textStyle: MaterialStateProperty.all(
+                      const TextStyle(fontWeight: FontWeight.bold)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+                ),
+                onPressed: () {
+                  globals.proveedorActualId = listaProveedoresId[i];
+                  Navigator.pushNamed(context, '/detalleProveedor');
+                },
+                child: Icon(Icons.list_alt)),
           ),
         ],
       ));
@@ -177,8 +202,8 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           alignment: Alignment.center,
           width: 150.0,
           height: 60.0,
-          color: Colors.black12,
-          margin: EdgeInsets.all(4.0),
+          color: Color.fromRGBO(203, 187, 238, 1),
+          margin: EdgeInsets.all(1.0),
           child: Text("${double.parse((totalCompras).toStringAsFixed(2))}",
               style: Theme.of(context).textTheme.headline6),
         ),
@@ -186,9 +211,17 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           alignment: Alignment.center,
           width: 150.0,
           height: 60.0,
-          color: Colors.black12,
-          margin: EdgeInsets.all(4.0),
+          color: Color.fromRGBO(203, 187, 238, 1),
+          margin: EdgeInsets.all(1.0),
           child: Text("Fecha", style: Theme.of(context).textTheme.headline6),
+        ),
+        Container(
+          alignment: Alignment.center,
+          width: 150.0,
+          height: 60.0,
+          color: Color.fromRGBO(203, 187, 238, 1),
+          margin: EdgeInsets.all(1.0),
+          child: Text("Detalle", style: Theme.of(context).textTheme.headline6),
         ),
       ],
     ));
@@ -203,18 +236,33 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
       alignment: Alignment.center,
       width: 150.0,
       height: 60.0,
-      color: Colors.black12,
-      margin: EdgeInsets.all(4.0),
-      child: Text("Total (S/.)", style: Theme.of(context).textTheme.headline6),
+      color: Color.fromRGBO(64, 51, 102, 1),
+      margin: EdgeInsets.all(1.0),
+      child: Text("Total (S/.)",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
     ));
 
     a.add(Container(
       alignment: Alignment.center,
       width: 150.0,
       height: 60.0,
-      color: Colors.black12,
-      margin: EdgeInsets.all(4.0),
-      child: Text("Fecha", style: Theme.of(context).textTheme.headline6),
+      color: Color.fromRGBO(64, 51, 102, 1),
+      margin: EdgeInsets.all(1.0),
+      child: Text("Fecha",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+    ));
+
+    a.add(Container(
+      alignment: Alignment.center,
+      width: 150.0,
+      height: 60.0,
+      color: Color.fromRGBO(64, 51, 102, 1),
+      margin: EdgeInsets.all(1.0),
+      child: Text("Detalle",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
     ));
 
     return a;
@@ -233,6 +281,7 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
     //
 
     List<String> listaProveedoresM = <String>[];
+    List<String> listaProveedoresIDX = <String>[];
 
     ProveedorProvider pp = ProveedorProvider();
     ProveedorResponse pr = await pp.obtenerProveedores();
@@ -250,9 +299,11 @@ class _CompraBrosaDrawer extends State<CompraBrosaDrawer> {
           persr.personaList[0].apellidos +
           " | " +
           sr.sedeList[0].nombre);
+      listaProveedoresIDX.add(pr.proveedorList[i].id);
     }
     setState(() {
       comprasTotales = comprasTotalesX;
+      listaProveedoresId = listaProveedoresIDX;
       listaProveedores = listaProveedoresM;
       totalCompras = 0;
       for (int i = 0; i < comprasTotales.length; i++) {

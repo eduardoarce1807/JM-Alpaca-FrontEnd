@@ -68,6 +68,18 @@ class TipoDescuentoResponse {
   }
 }
 
+class ComprasResponse {
+  List<CompraModel> comprasList = <CompraModel>[];
+
+  ComprasResponse.fromAPI(Map jsonCompraResponse) {
+    for (int i = 0; i < jsonCompraResponse["comprasProveedorId"].length; i++) {
+      CompraModel compra =
+          CompraModel(jsonCompraResponse["comprasProveedorId"][i]);
+      this.comprasList.add(compra);
+    }
+  }
+}
+
 class CompraResponse {
   CompraModel compra =
       CompraModel.fromValues("", "", "", "", "", "", 0, 0, 0, 0, 0, false);

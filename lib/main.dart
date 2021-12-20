@@ -1,4 +1,5 @@
 import 'package:jm_alpaca/drawer/compra/CompraBrosa.dart';
+import 'package:jm_alpaca/drawer/compra/DetalleProveedor.dart';
 import 'package:jm_alpaca/drawer/compra/ListaDePesos.dart';
 import 'package:jm_alpaca/drawer/compra/NuevaCompra.dart';
 import 'package:jm_alpaca/drawer/compra/DetalleCompra.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
           CompraBrosaDrawer.ruta: (BuildContext context) => CompraBrosaDrawer(),
           NuevaCompraDrawer.ruta: (BuildContext context) => NuevaCompraDrawer(),
           ListaDePesos.ruta: (BuildContext context) => ListaDePesos(),
-          DetalleCompra.ruta: (BuildContext context) => DetalleCompra()
+          DetalleCompra.ruta: (BuildContext context) => DetalleCompra(),
+          DetalleProveedor.ruta: (BuildContext context) => DetalleProveedor()
         });
   }
 }
